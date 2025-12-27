@@ -21,6 +21,8 @@ public class CardPayment extends Payment{
         System.out.println("Validating card number format..");
     }
 
-
-
+    @Override
+    public boolean validate() {
+        return cardNumber != null && !cardNumber.isEmpty() && expiryDate != null && !expiryDate.isEmpty();
+    }
 }

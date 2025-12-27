@@ -1,28 +1,29 @@
-import java.util.List;
-
 public class Main {
 
     public static void main(String[] args) {
 
-        Payment cash = new CashOnDelivery(5000,"LKR","Pending");
-        Payment bank = new BankTransfer(20000,"LKR","HNB","10101010","Nidula");
-        Payment credit = new CreditCardPayment(50000,"USD","343434232","ekanayake","11/26",50000);
-        Payment debit = new DebitCardPayment(9000,"LKR","23232323","john","12/30",100000);
+        Payable[] payments = {
+                new CashOnDelivery(100000, "LKR", "Colombo 07"),
+                new BankTransfer(15000, "LKR", "HNB", "123456789", "BANK-REF-01"),
+                new CreditCardPayment(25000, "LKR", "41111111", "Nidula", "12/26", 100000),
+                new DebitCardPayment(18000, "LKR", "52222222", "Nidula", "11/25", 50000)
+        };
 
-        cash.processPayment();
-        bank.processPayment();
-        credit.processPayment();
-        debit.processPayment();
+        for (Payable p : payments) {
 
-        System.out.println(cash.generateReceipt());
-        System.out.println(bank.generateReceipt());
-        System.out.println(credit.generateReceipt());
-        System.out.println(debit.generateReceipt());
+            Payment payment = (Payment) p;
 
-        List<Payment> payment = List.of(cash,bank,credit,debit);
-        for(Payment p : payment){
-            p.processPayment();;
-            System.out.println(p.generateReceipt());
+            System.out.println("\nProcessing: " + payment.getClass().getSimpleName());
+
+            payment.processPayment();
+
+            System.out.println(payment.generateReceipt());
+
+            if (payment instanceof Discount) {
+                Discount d = (Discount) payment;
+                d.applyDiscount(10);
+                System.out.println("Final Amount : " + d.finalAmount());
+            }
         }
     }
 }

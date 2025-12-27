@@ -1,6 +1,7 @@
-public class CreditCardPayment extends CardPayment {
+public class CreditCardPayment extends CardPayment implements Discount {
 
     public double creditLimit;
+
 
     public CreditCardPayment(double amount,String currency,String cardNumber,String cardHolderName, String expiryDate,double creditLimit){
         super(amount,currency,cardNumber,cardHolderName,expiryDate);
@@ -13,8 +14,14 @@ public class CreditCardPayment extends CardPayment {
         markAsCompleted();
     }
 
-    public void applyInterest(){
-        System.out.println("Applying interest if payment is not settled by due date");
+    @Override
+    public double applyDiscount(double percent) {
+        amount = amount * (1 - percent / 100);
+        return amount;
     }
 
+    @Override
+    public double finalAmount() {
+        return amount;
+    }
 }

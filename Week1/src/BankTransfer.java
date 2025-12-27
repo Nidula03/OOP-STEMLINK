@@ -15,10 +15,20 @@ public class BankTransfer extends Payment {
 
     @Override
     public void processPayment() {
+
+        if (!validate()) {
+            System.out.println("Bank transfer failed");
+            status = "Failed";
+            return;
+        }
+
         System.out.println("Initiating bank transfer to: " + bankName + " using account: " + accountNumber + " with reference: " + referenceCode);
         markAsCompleted();
     }
 
 
-
+    @Override
+    public boolean validate() {
+        return amount > 0 && bankName != null && accountNumber != null;
+    }
 }

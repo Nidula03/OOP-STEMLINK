@@ -1,8 +1,9 @@
-public class Payment {
+public abstract class Payment implements Payable{
 
     public double amount;
     public String currency;
     public String status;
+    public String referenceID = "Ref001";
 
     public Payment(double amount, String currency) {
         this.amount = amount;
@@ -10,12 +11,10 @@ public class Payment {
         this.status = "pending";
     }
 
-    public void processPayment() {
-        System.out.println("Processing generic payment...");
-    }
+    public abstract void processPayment();
 
     public String generateReceipt() {
-        return "Receipt for amount " + amount + " " + currency;
+        return "Reference ID: " + referenceID +"Receipt for amount " + amount + " " + currency + "Status" + status;
     }
 
     public void markAsCompleted() {
@@ -23,6 +22,7 @@ public class Payment {
     }
 
     // Getters and Setters
+
     public double getAmount() {
         return amount;
     }
@@ -45,5 +45,10 @@ public class Payment {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    @Override
+    public String getReferenceID() {
+        return referenceID;
     }
 }

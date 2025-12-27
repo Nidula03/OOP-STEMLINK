@@ -1,4 +1,4 @@
-public class DebitCardPayment extends CardPayment{
+public class DebitCardPayment extends CardPayment implements Discount{
 
     public double availableBalance;
 
@@ -9,6 +9,12 @@ public class DebitCardPayment extends CardPayment{
 
     @Override
     public void processPayment(){
+        if (!validate()) {
+            System.out.println("Debit card validation failed");
+            status = "FAILED";
+            return;
+        }
+
         System.out.println("Debiting from account balance: " + availableBalance + "for amount:  " + amount);
         markAsCompleted();
     }
@@ -19,5 +25,15 @@ public class DebitCardPayment extends CardPayment{
 
 
 
+    @Override
+    public double applyDiscount(double percent) {
+        amount = amount * (1 - percent / 100);
+        return amount;
+    }
+
+    @Override
+    public double finalAmount() {
+        return amount;
+    }
 
 }
